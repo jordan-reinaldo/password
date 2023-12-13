@@ -21,10 +21,21 @@ def valid_password(password):
 
 # fonction pour générer un mot de passe aléatoire
 def generer_mdp_aleatoire():
-    while True:
-        password = ''.join(random.choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*') for i in range(10))
-        if not valid_password(password):
-            return password
+    # Créer des listes pour les différents types de caractères
+    majuscules = [random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ') for _ in range(3)]
+    minuscules = [random.choice('abcdefghijklmnopqrstuvwxyz') for _ in range(3)]
+    chiffres = [random.choice('0123456789') for _ in range(2)]
+    speciaux = [random.choice('!@#$%^&*') for _ in range(2)]
+
+    # Construire le mot de passe en combinant les listes
+    password_chars = majuscules + minuscules + chiffres + speciaux
+    # Mélanger les caractères pour que le mot de passe soit aléatoire
+    random.shuffle(password_chars)
+    # Joindre les caractères pour former le mot de passe
+    password = ''.join(password_chars)
+
+    return password
+
 
 # Fonction pour hacher le mot de passe avec SHA-256
 def hash_password(password):

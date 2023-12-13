@@ -24,7 +24,7 @@ def valid_password(password):
         return False # si des erreurs sont trouvés la fonction est fausse. 
     return True #aucune erreur trouvée, la fonction est vrai, le mot de passe est bon.
 
-# Fonction pour demander à l'utilisateur d'entrer un mot de passe
+# fonction pour demander à l'utilisateur d'entrer un mot de passe
 def entree_mdp():
     while True:
         user_password = input("Choisissez un mot de passe : ")
@@ -33,11 +33,11 @@ def entree_mdp():
         else:
             print("Veuillez réessayer.")
 
-# Fonction pour hacher le mot de passe avec SHA-256
+# fonction pour hacher le mot de passe avec SHA-256
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-# Fonction pour enregistrer le mot de passe haché dans un fichier JSON
+# fonction pour enregistrer le mot de passe haché dans un fichier JSON
 def enregistrer_mdp_hache(mdp_hache, chemin_fichier='mdp.json'):
     try:
         with open(chemin_fichier, 'r') as fichier:
@@ -45,21 +45,20 @@ def enregistrer_mdp_hache(mdp_hache, chemin_fichier='mdp.json'):
     except FileNotFoundError:
         data = {}
 
-    # Utiliser un index numérique comme clé
+    # utiliser un index numérique comme clé
     index = str(len(data) + 1)
     data[index] = mdp_hache
 
     with open(chemin_fichier, 'w') as fichier:
         json.dump(data, fichier, indent=4)
 
-# Programme principal
+# programme principal
 mdp = entree_mdp()
 hashed_password = hash_password(mdp)
 enregistrer_mdp_hache(hashed_password)
 print("Mot de passe haché enregistré.")
-# [Vos fonctions existantes ici...]
 
-# Fonction pour lire et afficher les mots de passe hachés
+# fonction pour lire et afficher les mots de passe hachés
 def lire_mdp_haches(chemin_fichier='mdp.json'):
     try:
         with open(chemin_fichier, 'r') as fichier:
@@ -70,7 +69,7 @@ def lire_mdp_haches(chemin_fichier='mdp.json'):
     except FileNotFoundError:
         print("Aucun mot de passe haché trouvé.")
 
-# Fonction pour afficher le menu
+# fonction pour afficher le menu
 def afficher_menu():
     print("\nMenu:")
     print("1. Entrer un nouveau mot de passe")
@@ -79,7 +78,7 @@ def afficher_menu():
     choix = input("Entrez votre choix (1-3): ")
     return choix
 
-# Boucle principale
+# boucle principale
 while True:
     choix_utilisateur = afficher_menu()
 
@@ -91,7 +90,7 @@ while True:
     elif choix_utilisateur == '2':
         lire_mdp_haches()
     elif choix_utilisateur == '3':
-        print("Fermeture du programme.")
+        print("Merci d'avoir utilisé notre programme.")
         break
     else:
         print("Choix invalide. Veuillez réessayer.")
