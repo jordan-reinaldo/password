@@ -21,17 +21,17 @@ def valid_password(password):
 
 # fonction pour générer un mot de passe aléatoire
 def generer_mdp_aleatoire():
-    # Créer des listes pour les différents types de caractères
+    #réer des listes pour les différents types de caractères
     majuscules = [random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ') for _ in range(3)]
     minuscules = [random.choice('abcdefghijklmnopqrstuvwxyz') for _ in range(3)]
     chiffres = [random.choice('0123456789') for _ in range(2)]
     speciaux = [random.choice('!@#$%^&*') for _ in range(2)]
 
-    # Construire le mot de passe en combinant les listes
+    # construire le mot de passe en combinant les listes
     password_chars = majuscules + minuscules + chiffres + speciaux
-    # Mélanger les caractères pour que le mot de passe soit aléatoire
+    # mélanger les caractères pour que le mot de passe soit aléatoire
     random.shuffle(password_chars)
-    # Joindre les caractères pour former le mot de passe
+    # joindre les caractères pour former le mot de passe
     password = ''.join(password_chars)
 
     return password
@@ -88,10 +88,10 @@ def main():
 
         if choix_utilisateur == '1':
             mdp = input("Choisissez un mot de passe : ")
-            erreurs = valid_password(mdp)
-            if erreurs:
-                for erreur in erreurs:
-                    print(erreur)
+            erreurs_détectées = valid_password(mdp)
+            if erreurs_détectées:
+                for i in erreurs_détectées:
+                    print(i)
                 continue
             hashed_password = hash_password(mdp)
             if enregistrer_mdp_hache(hashed_password):
@@ -108,7 +108,7 @@ def main():
             print("Merci d'avoir utilisé notre programme.")
             break
         else:
-            print("Choix invalide. Veuillez réessayer.")
+            print("Choix invalide. Veuillez saisir 1, 2, 3 ou 4 svp.")
 
 # Appel de la fonction main pour exécuter le programme
 main()
