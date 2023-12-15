@@ -3,7 +3,7 @@ import json
 import random
 
 # Fonction qui vérifie la sécurité du mot de passe
-def valid_password(password):
+def mdp_valide(password):
     erreurs = []
     # critères de sécurité
     if len(password) < 8:
@@ -19,54 +19,51 @@ def valid_password(password):
 
     return erreurs
 
-# fonction pour générer un mot de passe aléatoire
+# pour générer un mot de passe aléatoir
 def generer_mdp_aleatoire():
-    #réer des listes pour les différents types de caractères
-    majuscules = [random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ') for _ in range(3)]
+    #listes pour les différents types de caractères
+    majuscules = [random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ') for _ in range(3)] # _ est une variable temporaire
     minuscules = [random.choice('abcdefghijklmnopqrstuvwxyz') for _ in range(3)]
     chiffres = [random.choice('0123456789') for _ in range(2)]
     speciaux = [random.choice('!@#$%^&*') for _ in range(2)]
 
-    # construire le mot de passe en combinant les listes
-    password_chars = majuscules + minuscules + chiffres + speciaux
-    # mélanger les caractères pour que le mot de passe soit aléatoire
-    random.shuffle(password_chars)
-    # joindre les caractères pour former le mot de passe
-    password = ''.join(password_chars)
+    password_chars = majuscules + minuscules + chiffres + speciaux # construire le mot de passe en combinant les listes
+    random.shuffle(password_chars)     # mélanger les caractères pour que le mot de passe soit aléatoire
+    password = ''.join(password_chars) # joindre les caractères pour former le mot de passe
 
     return password
 
 
-# Fonction pour hacher le mot de passe avec SHA-256
+# hache le mot de passe avec la norme demandée dans l'énoncé :sha256
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-# Fonction pour enregistrer le mot de passe haché dans un fichier JSON
+# pour enregistrer le mot de passe haché dans un fichier JSON
 def enregistrer_mdp_hache(mdp_hache, chemin_fichier='mdp.json'):
     try:
-        with open(chemin_fichier, 'r') as fichier:
-            data = json.load(fichier)
-    except FileNotFoundError:
-        data = {}
+        with open(chemin_fichier, 'r') as fichier: 
+            fichier_json = json.load(fichier) # charger le fichier JSON dans un dictionnaire
+    except FileNotFoundError: # si le fichier n'existe pas, créer un dictionnaire vide
+         fichier_json = {}
 
-    if mdp_hache in data.values():
+    if mdp_hache in  fichier_json.values():
         print("Ce mot de passe est déjà utilisé.")
         return False
 
-    index = str(len(data) + 1)
-    data[index] = mdp_hache
+    index = str(len( fichier_json) + 1)
+    fichier_json[index] = mdp_hache # ajouter le mot de passe haché au dictionnaire
 
-    with open(chemin_fichier, 'w') as fichier:
-        json.dump(data, fichier, indent=4)
+    with open(chemin_fichier, 'w') as fichier: # écrire le dictionnaire dans le fichier JSON
+        json.dump( fichier_json, fichier, indent=4)
     return True
 
 # fonction pour lire et afficher les mots de passe hachés
 def lire_mdp_haches(chemin_fichier='mdp.json'):
     try:
-        with open(chemin_fichier, 'r') as fichier:
-            data = json.load(fichier)
+        with open(chemin_fichier, 'r') as fichier: # ouvrir le fichier JSON en mode lecture
+            fichier_json = json.load(fichier) 
             print("Mots de passe hachés :")
-            for index, mdp_hache in data.items():
+            for index, mdp_hache in  fichier_json.items(): # parcourir le dictionnaire et afficher les mots de passe hachés
                 print(f"{index}: {mdp_hache}")
     except FileNotFoundError:
         print("Aucun mot de passe haché trouvé.")
@@ -81,14 +78,14 @@ def afficher_menu():
     choix = input("Entrez votre choix (1-4): ")
     return choix
 
-# Programme principal
+# fonction principale
 def main():
-    while True:
+    while True: # boucle infinie car on veut que cela soit l'utilisateur qui stop le programme
         choix_utilisateur = afficher_menu()
 
         if choix_utilisateur == '1':
             mdp = input("Choisissez un mot de passe : ")
-            erreurs_détectées = valid_password(mdp)
+            erreurs_détectées = mdp_valide(mdp) 
             if erreurs_détectées:
                 for i in erreurs_détectées:
                     print(i)
@@ -110,5 +107,5 @@ def main():
         else:
             print("Choix invalide. Veuillez saisir 1, 2, 3 ou 4 svp.")
 
-# Appel de la fonction main pour exécuter le programme
+# appel de la fonction main pour exécuter le programme
 main()
